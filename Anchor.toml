@@ -1,0 +1,12 @@
+[programs.localnet]
+learning_solana = "GHjv1GmoaQV5Pisy456nrWYAm5U52sgweAbos2Ln8vqb"
+
+[registry]
+url = "https://anchor.projectserum.com"
+
+[provider]
+cluster = "localnet"
+wallet = "/home/aditya/.config/solana/id.json"
+
+[scripts]
+test = "yarn run mocha -t 1000000 tests/"
