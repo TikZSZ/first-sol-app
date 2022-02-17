@@ -4,12 +4,12 @@ import { Connection, PublicKey } from '@solana/web3.js';
 import {
   Program, Provider, web3
 } from '@project-serum/anchor';
-import {IDL} from "./types/mysolanaapp"
+import {IDL} from "./types/solana_lock-1"
 import idl from "./idl.json"
 import { PhantomWalletAdapter } from '@solana/wallet-adapter-wallets';
 import { useWallet, WalletProvider, ConnectionProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
-import('@solana/wallet-adapter-react-ui/styles.css');
+//import('@solana/wallet-adapter-react-ui/styles.css');
 
 const wallets = [
   /* view list of available wallets at https://github.com/solana-labs/wallet-adapter#wallets */
@@ -44,35 +44,16 @@ function App() {
     const program = new Program(IDL, programID, provider);
     try {
       /* interact with the program via rpc */
-      await program.rpc.create({
-        accounts: {
-          baseAccount: baseAccount.publicKey,
-          user: provider.wallet.publicKey,
-          systemProgram: SystemProgram.programId,
-        },
+      await program.rpc.initialize({
         signers: [baseAccount]
       });
 
-      const account = await program.account.baseAccount.fetch(baseAccount.publicKey);
+      const account = await program.account.lock.fetch(baseAccount.publicKey)
       console.log('account: ', account);
-      setValue(parseInt(account.count.toString()));
+      setValue(account.balance);
     } catch (err) {
       console.log("Transaction error: ", err);
     }
-  }
-
-  async function increment() {
-    const provider = await getProvider();
-    const program = new Program(IDL, programID, provider);
-    await program.rpc.increment({
-      accounts: {
-        baseAccount: baseAccount.publicKey
-      }
-    });
-
-    const account = await program.account.baseAccount.fetch(baseAccount.publicKey);
-    console.log('account: ', account);
-    setValue(parseInt(account.count.toString()));
   }
 
   if (!wallet.connected) {
@@ -89,10 +70,6 @@ function App() {
           {
             !value && (<button onClick={createCounter}>Create counter</button>)
           }
-          {
-            value && <button onClick={increment}>Increment counter</button>
-          }
-
           {
             value && value >= Number(0) ? (
               <h2>{value}</h2>
