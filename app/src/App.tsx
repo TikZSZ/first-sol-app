@@ -2,13 +2,14 @@
 import { useState } from 'react';
 import { Connection, PublicKey } from '@solana/web3.js';
 import {
-  Program, Provider, web3
+  Program, Provider, web3,AccountClient
 } from '@project-serum/anchor';
 import {IDL} from "./types/solana_lock-1"
 import idl from "./idl.json"
 import { PhantomWalletAdapter } from '@solana/wallet-adapter-wallets';
 import { useWallet, WalletProvider, ConnectionProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+
 //import('@solana/wallet-adapter-react-ui/styles.css');
 
 const wallets = [
@@ -23,15 +24,17 @@ const opts = {
   preflightCommitment: "processed"
 }
 const programID = new PublicKey(idl.metadata.address);
+const endpoint = "http://127.0.0.1:8899"
 
 function App() {
   const [value, setValue] = useState<number|null>(null);
+  const [balance,setBalance] = useState<number|null>(null);
   const wallet = useWallet();
 
   async function getProvider() {
     /* create the provider and return it to the caller */
     /* network set to local network for now */
-    const network = "http://127.0.0.1:8899";
+    const network = endpoint;
     const connection = new Connection(network, "processed");
     // @ts-ignore 
     const provider = new Provider(connection, wallet, opts);
@@ -56,6 +59,13 @@ function App() {
     }
   }
 
+  async function getAccountBalance(){
+    const provider = await getProvider()
+    const connection = new Connection(endpoint, "processed");
+    const solBalance = await connection.getBalance(provider.wallet.publicKey)
+    setBalance(solBalance)
+  }
+
   if (!wallet.connected) {
     /* If the user's wallet is not connected, display connect wallet button. */
     return (
@@ -66,16 +76,15 @@ function App() {
   } else {
     return (
       <div className="App">
+        {balance && <p>Your solana balance is {balance}</p>}
+        <br />
         <div>
+          {balance?(<p>Your solana balance is {balance}</p>):(<button onClick={getAccountBalance}>Get Balance</button>)}
           {
-            !value && (<button onClick={createCounter}>Create counter</button>)
+            !value && (<button onClick={createCounter}>Initialize</button>)
           }
           {
-            value && value >= Number(0) ? (
-              <h2>{value}</h2>
-            ) : (
-              <h3>Please create the counter.</h3>
-            )
+            value && <span>{value}</span>
           }
         </div>
       </div>
@@ -85,7 +94,7 @@ function App() {
 
 /* wallet configuration as specified here: https://github.com/solana-labs/wallet-adapter#setup */
 const AppWithProvider = () => (
-  <ConnectionProvider endpoint="http://127.0.0.1:8899">
+  <ConnectionProvider endpoint={endpoint}>
     <WalletProvider wallets={wallets} autoConnect>
       <WalletModalProvider>
         <App />
