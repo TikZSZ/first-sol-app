@@ -1,67 +1,127 @@
-export type SolanaLock = {
+export type Dojbridge = {
   "version": "0.1.0",
   "name": "solana_lock",
   "instructions": [
     {
-      "name": "initialize",
-      "accounts": [],
-      "args": []
-    }
-  ],
-  "accounts": [
+      "name": "transferTokens",
+      "accounts": [
+        {
+          "name": "from",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "fromTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "toTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
     {
-      "name": "lock",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "owner",
-            "type": "publicKey"
-          },
-          {
-            "name": "balance",
-            "type": "i32"
-          },
-          {
-            "name": "amount",
-            "type": "i16"
-          }
-        ]
-      }
+      "name": "transferNatTokens",
+      "accounts": [
+        {
+          "name": "from",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "to",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
     }
   ]
 };
 
-export const IDL: SolanaLock = {
+export const IDL: Dojbridge = {
   "version": "0.1.0",
   "name": "solana_lock",
   "instructions": [
     {
-      "name": "initialize",
-      "accounts": [],
-      "args": []
-    }
-  ],
-  "accounts": [
+      "name": "transferTokens",
+      "accounts": [
+        {
+          "name": "from",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "fromTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "toTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
     {
-      "name": "lock",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "owner",
-            "type": "publicKey"
-          },
-          {
-            "name": "balance",
-            "type": "i32"
-          },
-          {
-            "name": "amount",
-            "type": "i16"
-          }
-        ]
-      }
+      "name": "transferNatTokens",
+      "accounts": [
+        {
+          "name": "from",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "to",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
     }
   ]
 };

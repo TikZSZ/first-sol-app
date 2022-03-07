@@ -1,55 +1,66 @@
 {
   "version": "0.1.0",
-  "name": "mysolanaapp",
+  "name": "solana_lock",
   "instructions": [
     {
-      "name": "create",
+      "name": "transferTokens",
       "accounts": [
         {
-          "name": "baseAccount",
+          "name": "from",
           "isMut": true,
           "isSigner": true
         },
         {
-          "name": "user",
+          "name": "fromTokenAccount",
           "isMut": true,
-          "isSigner": true
+          "isSigner": false
         },
         {
-          "name": "systemProgram",
+          "name": "toTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
           "isMut": false,
           "isSigner": false
         }
       ],
-      "args": []
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
     },
     {
-      "name": "increment",
+      "name": "transferNatTokens",
       "accounts": [
         {
-          "name": "baseAccount",
+          "name": "from",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "to",
           "isMut": true,
           "isSigner": false
         }
       ],
-      "args": []
-    }
-  ],
-  "accounts": [
-    {
-      "name": "BaseAccount",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "count",
-            "type": "u64"
-          }
-        ]
-      }
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
     }
   ],
   "metadata": {
-    "address": "GHjv1GmoaQV5Pisy456nrWYAm5U52sgweAbos2Ln8vqb"
+    "address": "8eUavPfcZAnLJeRypVnQ4UTSWYLtpZm7dHd2NGJLrW89"
   }
 }
